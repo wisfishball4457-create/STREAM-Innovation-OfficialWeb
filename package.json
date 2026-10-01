@@ -1,0 +1,13 @@
+{
+  "name": "stream-innovation-club-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Oakridge International School STREAM Innovation Club website",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "setup-admin": "node setup-admin.js"
+  }
+}

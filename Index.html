@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover the STREAM Innovation Club at Oakridge International School: explore our six learning pillars, interactive lab, projects, calendar, and membership information.">
+  <meta name="theme-color" content="#070913">
+  <title>STREAM Innovation Club | Oakridge International School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #070913;
+      --bg-card: rgba(18, 22, 41, 0.75);
+      --bg-card-hover: rgba(28, 35, 65, 0.85);
+      --border-glow: rgba(99, 102, 241, 0.25);
+      
+      --accent-cyan: #00f2fe;
+      --accent-purple: #7000ff;
+      --accent-pink: #ff007f;
+      --accent-emerald: #00f5a0;
+      --accent-amber: #ffb703;
+      
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Background Neon Grid Accent */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(112, 0, 255, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 65%, rgba(0, 242, 254, 0.12) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 9, 19, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 100;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 75px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      color: #fff;
+      font-size: 1.2rem;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .brand-text p {
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.8rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      padding: 0.55rem 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent-cyan);
+    }
+
+    .btn {
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-purple), #4f46e5);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(112, 0, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(112, 0, 255, 0.5);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 5rem 0 3rem;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      color: var(--accent-cyan);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      letter-spacing: -1px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 20%, var(--accent-cyan) 60%, var(--accent-pink) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      max-width: 780px;
+      margin: 0 auto 2.5rem;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+    }
+
+    /* STREAM Acronym Breakdown Banner */
+    .stream-breakdown {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 3rem 0;
+    }
+
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .pillar-card:hover, .pillar-card.active {
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+    }
+
+    .pillar-card.active {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+    }
+
+    .pillar-letter {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .pillar-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .pillar-s .pillar-letter { color: #38ef7d; }
+    .pillar-t .pillar-letter { color: #00f2fe; }
+    .pillar-r .pillar-letter { color: #ff007f; }
+    .pillar-e .pillar-letter { color: #ffb703; }
+    .pillar-a .pillar-letter { color: #7000ff; }
+    .pillar-m .pillar-letter { color: #ff00ab; }
+
+    /* Interactive STREAM Showcase Viewer */
+    .showcase-display {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .showcase-info h3 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .showcase-info p {
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .showcase-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .showcase-box {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Interactive STREAM Sandbox Interactive Widget */
+    .sandbox-section {
+      padding: 4rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+    }
+
+    .sandbox-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 1.8rem;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 1.5rem;
+    }
+
+    .sandbox-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-cyan);
+    }
+
+    .canvas-wrapper {
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Schedule / Activities Section */
+    .schedule-section {
+      padding: 4rem 0;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent-cyan);
+      color: #000;
+      font-weight: 600;
+      border-color: var(--accent-cyan);
+    }
+
+    .activities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .activity-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .activity-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-3px);
+    }
+
+    .activity-date {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .activity-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .activity-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .activity-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.8rem;
+    }
+
+    /* Officers & Adviser Section */
+    .team-section {
+      padding: 4rem 0;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .avatar-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0,242,254,0.2), rgba(112,0,255,0.2));
+      border: 2px solid var(--accent-cyan);
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #fff;
+    }
+
+    .team-name {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .team-role {
+      font-size: 0.82rem;
+      color: var(--accent-cyan);
+      margin-bottom: 0.4rem;
+    }
+
+    .team-grade {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    /* Registration Panel / Modal */
+    .join-panel-container {
+      background: linear-gradient(135deg, rgba(112,0,255,0.15), rgba(0,242,254,0.1));
+      border: 1px solid var(--accent-cyan);
+      border-radius: 20px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      margin: 4rem 0;
+      /* FIX: Removed violent/shaking keyframe animations */
+      transition: box-shadow 0.3s ease;
+    }
+
+    .join-panel-container:hover {
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+    }
+
+    /* Modal Backdrop */
+    .modal-overlay {
+      position: fixed;
+      top:0; left:0; width:100vw; height:100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+      transition-delay: 0s;
+    }
+
+    .modal-card {
+      background: #0f1322;
+      border: 1px solid var(--border-glow);
+      width: 90%;
+      max-width: 500px;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);
+    }
+
+    .form-status {
+      min-height: 1.5rem;
+      margin-top: 0.9rem;
+      color: var(--accent-cyan);
+      font-size: 0.88rem;
+    }
+
+    .form-status[data-state="error"] {
+      color: #fda4af;
+    }
+
+    .form-status[data-state="success"] {
+      color: var(--accent-emerald);
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 2000;
+      padding: 0.75rem 1rem;
+      transform: translateY(-160%);
+      border-radius: 8px;
+      background: var(--accent-cyan);
+      color: #000;
+      font-weight: 700;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 3px;
+    }
+
+    .pillar-card {
+      width: 100%;
+      color: var(--text-main);
+      font: inherit;
+    }
+
+    .pillar-card:focus-visible,
+    .filter-btn:focus-visible,
+    .btn:focus-visible,
+    .menu-toggle:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 3px;
+    }
+
+    .modal-overlay {
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .modal-card {
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2.5rem 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .showcase-display { grid-template-columns: 1fr; }
+      .sandbox-container { grid-template-columns: 1fr; }
+      .nav-wrapper {
+        height: auto;
+        min-height: 75px;
+        flex-wrap: wrap;
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
+      }
+
+      .menu-toggle { display: inline-flex; }
+
+      nav {
+        display: none;
+        order: 4;
+        width: 100%;
+      }
+
+      nav.open { display: block; }
+
+      nav ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0.35rem 0;
+      }
+
+      nav a {
+        display: block;
+        padding: 0.7rem 0;
+      }
+
+      .brand-text h1 { font-size: 1rem; }
+      .brand-text p { font-size: 0.62rem; }
+      .activities-grid { grid-template-columns: 1fr; }
+      .join-panel-container { padding: 2.5rem 1.2rem; }
+      .join-panel-container h2 { font-size: 1.7rem !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="grid-bg"></div>
+
+  <!-- Header / Navigation -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="brand">
+        <div class="brand-logo">S</div>
+        <div class="brand-text">
+          <h1>STREAM Club</h1>
+          <p>Oakridge International</p>
+        </div>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNavigation">Menu</button>
+      <nav id="siteNavigation">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#pillars">Pillars</a></li>
+          <li><a href="#sandbox">Interactive Lab</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#team">Team</a></li>
+        </ul>
+      </nav>
+      <button class="btn btn-primary" type="button" onclick="openModal(this)">Join Club</button>
+    </div>
+  </header>
+
+  <main class="container" id="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero" id="about">
+      <div class="badge">
+        <span>●</span> STREAM Club • School Year 2026-2027
+      </div>
+      <h1 class="hero-title">
+        Innovate, Design & Build <br>With <span class="gradient-text">STREAM Excellence</span>
+      </h1>
+      <p class="hero-subtitle">
+        Oakridge International School’s premier hub for cross-disciplinary discovery. Combining science, technology, research, engineering, architecture, and mathematics to solve real-world challenges.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <button class="btn btn-primary" type="button" onclick="openModal(this)">Apply for Membership</button>
+        <a href="#schedule" class="btn" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1);">Explore Calendar</a>
+      </div>
+    </section>
+
+    <!-- STREAM Pillars Breakdown -->
+    <section id="pillars" style="padding-top: 2rem;">
+      <div class="section-header">
+        <h2>The 6 Pillars of STREAM</h2>
+        <p>Click a pillar to inspect its core focus within our club curriculum</p>
+      </div>
+
+      <div class="stream-breakdown">
+        <button class="pillar-card pillar-s active" type="button" aria-pressed="true" onclick="selectPillar('science', this)">
+          <span class="pillar-letter">S</span>
+          <span class="pillar-title">Science</span>
+        </button>
+        <button class="pillar-card pillar-t" type="button" aria-pressed="false" onclick="selectPillar('tech', this)">
+          <span class="pillar-letter">T</span>
+          <span class="pillar-title">Technology</span>
+        </button>
+        <button class="pillar-card pillar-r" type="button" aria-pressed="false" onclick="selectPillar('research', this)">
+          <span class="pillar-letter">R</span>
+          <span class="pillar-title">Research</span>
+        </button>
+        <button class="pillar-card pillar-e" type="button" aria-pressed="false" onclick="selectPillar('engineering', this)">
+          <span class="pillar-letter">E</span>
+          <span class="pillar-title">Engineering</span>
+        </button>
+        <button class="pillar-card pillar-a" type="button" aria-pressed="false" onclick="selectPillar('architecture', this)">
+          <span class="pillar-letter">A</span>
+          <span class="pillar-title">Architecture</span>
+        </button>
+        <button class="pillar-card pillar-m" type="button" aria-pressed="false" onclick="selectPillar('math', this)">
+          <span class="pillar-letter">M</span>
+          <span class="pillar-title">Mathematics</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Display Area -->
+      <div class="showcase-display" id="pillar-display">
+        <div class="showcase-info">
+          <h3 id="display-title">Science Focus</h3>
+          <p id="display-desc">Investigating natural phenomena through experimental design, biology, and chemistry labs. Members conduct systematic investigations to analyze environmental and physical science topics.</p>
+          <div class="showcase-tags" id="display-tags">
+            <span class="tag">Experimental Design</span>
+            <span class="tag">Hypothesis Testing</span>
+            <span class="tag">Data Analysis</span>
+          </div>
+        </div>
+        <div class="showcase-box" id="display-visual">
+          <div style="font-size: 3rem;">🔬</div>
+          <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 8px;">Scientific Investigation Framework</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Interactive Lab / Sandbox -->
+    <section class="sandbox-section" id="sandbox">
+      <div class="section-header">
+        <h2>Interactive STREAM Lab</h2>
+        <p>Explore real-time simulation tools built for mathematical art and mechanical engineering</p>
+      </div>
+
+      <div class="sandbox-container">
+        <div class="sandbox-controls">
+          <h4 style="font-family: var(--font-heading); margin-bottom: 0.5rem;">Simulator Controls</h4>
+          
+          <div class="control-group">
+            <label for="mode-select">Simulation Mode:</label>
+            <select id="mode-select" class="form-control" onchange="updateSim()">
+              <option value="math">Math & Geometric Visualizer</option>
+              <option value="gear">Engineering Gear Dynamics</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="param-speed">Animation Speed:</label>
+            <input type="range" id="param-speed" min="1" max="10" value="5" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <label for="param-nodes">Symmetry / Gear Teeth:</label>
+            <input type="range" id="param-nodes" min="3" max="16" value="8" oninput="updateSim()">
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; font-size: 0.82rem; color: var(--text-muted); margin-top: auto;">
+            <strong>Output Metrics:</strong>
+            <div id="metric-1">Calculated RPM: 120</div>
+            <div id="metric-2">Symmetry Nodes: 8</div>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="simCanvas" width="600" height="350" role="img" aria-label="Animated STREAM mathematics and engineering simulation">
+            Interactive simulation. Adjust the controls to change the visualization.
+          </canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Planned Activities Schedule -->
+    <section class="schedule-section" id="schedule">
+      <div class="section-header">
+        <h2>SY 2026-2027 Calendar & Projects</h2>
+        <p>Explore our monthly activities held every Friday directly after school (3:25 PM - 4:20 PM)</p>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" type="button" aria-pressed="true" onclick="filterEvents('all', this)">All Projects</button>
+        <button class="filter-btn" type="button" aria-pressed="false" onclick="filterEvents('science', this)">Science & Research</button>
+        <button class="filter-btn" type="button" aria-pressed="false" onclick="filterEvents('math', this)">Math & Architecture</button>
+        <button class="filter-btn" type="button" aria-pressed="false" onclick="filterEvents('tech', this)">Tech & Engineering</button>
+        <button class="filter-btn" type="button" aria-pressed="false" onclick="filterEvents('event', this)">Exhibitions</button>
+      </div>
+
+      <div class="activities-grid" id="events-grid">
+        <!-- Oct -->
+        <div class="activity-card" data-category="science">
+          <div>
+            <div class="activity-date">Oct 9, 2026</div>
+            <h3 class="activity-title">First Project Formation</h3>
+            <p class="activity-desc">Forming collaborative research teams and choosing the initial Science & Research focus topics.</p>
+          </div>
+          <div class="activity-meta">
+            <span>📍 Grade 9 Classroom</span>
+            <span class="tag">Research</span>
+          </div>
+        </div>
+
+        <!-- Nov -->
+        <div class="activity-card" data-category="math">
+          <div>
+            <div class="activity-date">Nov 6, 2026</div>
+            <h3 class="activity-title">Architecture & Math Challenge</h3>
+            <p class="activity-desc">Establishing project teams and defining mathematical and structural architectural design goals.</p>
+          </div>
+          <div class="activity-meta">
+            <span>📍 Grade 9 Classroom</span>
+            <span class="tag">Architecture</span>
+          </div>
+        </div>
+
+        <!-- Dec -->
+        <div class="activity-card" data-category="event">
+          <div>
+            <div class="activity-date">Dec 4, 2026</div>
+            <h3 class="activity-title">Festive STREAM Builds</h3>
+            <p class="activity-desc">Applying STREAM concepts through festive, creative holiday-themed engineering prototypes.</p>
+          </div>
+          <div class="activity-meta">
+            <span>📍 Grade 9 Classroom</span>
+            <span class="tag">Creative</span>
+          </div>
+        </div>
+
+        <!-- Jan -->
+        <div class="activity-card" data-category="tech">
+          <div>
+            <div class="activity-date">Jan 2027 (Week 1)</div>
+            <h3 class="activity-title">Concepts Refresh & Practice</h3>
+            <p class="activity-desc">Refresher session to practice core technical skills and coding frameworks after holiday break.</p>
+          </div>
+          <div class="activity-meta">
+            <span>📍 Grade 9 Classroom</span>
+            <span class="tag">Skill Building</span>
+          </div>
+        </div>
+
+        <!-- Feb -->
+        <div class="activity-card" data-category="tech">
+          <div>
+            <div class="activity-date">Feb 5, 2027</div>
+            <h3 class="activity-title">Tech & Engineering Builds</h3>
+            <p class="activity-desc">Assembling final project groups and initiating prototype assembly for high-tech robotics and hardware.</p>
+          </div>
+          <div class="activity-meta">
+            <span>📍 Grade 9 Classroom</span>
+            <span class="tag">Engineering</span>
+          </div>
+        </div>
+
+        <!-- Mar -->
+        <div class="activity-card" data-category="event">
+          <div>
+            <div class="activity-date">March 17, 2027</div>
+            <h3 class="activity-title">STREAM Exhibition Showcase</h3>
+            <p class="activity-desc">Culminating Science Fair and interactive exhibition displaying member capstone projects to Oakridge.</p>
+          </div>
+          <div class="activity-meta">
+            <span>📍 School Quad</span>
+            <span class="tag">Exhibition</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leadership / Officers Section -->
+    <section class="team-section" id="team">
+      <div class="section-header">
+        <h2>Club Officers & Leadership</h2>
+        <p>Meet the founding student council and faculty adviser leading STREAM Innovation Club</p>
+      </div>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="avatar-circle">LP</div>
+          <div class="team-name">Lois Anaiah P. Pugal</div>
+          <div class="team-role">President</div>
+          <div class="team-grade">Grade 8 Beavers</div>
+        </div>
+
+        <div class="team-card">
+          <div class="avatar-circle">CB</div>
+          <div class="team-name">Constantine A. Beguas</div>
+          <div class="team-role">Vice President</div>
+          <div class="team-grade">Grade 8 Beavers</div>
+        </div>
+
+        <div class="team-card">
+          <div class="avatar-circle">SS</div>
+          <div class="team-name">Sumeet M. Singh</div>
+          <div class="team-role">Secretary</div>
+          <div class="team-grade">Grade 7 Engineers</div>
+        </div>
+
+        <div class="team-card">
+          <div class="avatar-circle">LD</div>
+          <div class="team-name">Lanz Andrew C. De Vera</div>
+          <div class="team-role">Treasurer</div>
+          <div class="team-grade">Grade 7 Engineers</div>
+        </div>
+
+        <div class="team-card">
+          <div class="avatar-circle">SL</div>
+          <div class="team-name">Smith Angelo L. Langton</div>
+          <div class="team-role">PIO / Publicity</div>
+          <div class="team-grade">Grade 8 Beavers</div>
+        </div>
+
+        <div class="team-card" style="border-color: rgba(0, 242, 254, 0.4);">
+          <div class="avatar-circle" style="border-color: var(--accent-pink);">JD</div>
+          <div class="team-name">Sir Jenard De Vera</div>
+          <div class="team-role" style="color: var(--accent-pink);">Faculty Adviser</div>
+          <div class="team-grade">High School Dept.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join Call to Action Panel (Clean Static Styling - No Violent Shake) -->
+    <section class="join-panel-container">
+      <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 0.8rem;">Ready to Build the Future?</h2>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 1.8rem;">
+        Join Oakridge International School's STREAM Innovation Club today! Meetings held every Friday at 3:25 PM in Grade 9 Classroom.
+      </p>
+      <button class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem;" type="button" onclick="openModal(this)">Register for Membership</button>
+    </section>
+
+  </main>
+
+  <!-- Registration Modal -->
+  <div class="modal-overlay" id="registrationModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="registrationTitle" aria-describedby="registrationDescription">
+      <button class="close-modal" type="button" aria-label="Close registration form" onclick="closeModal()">&times;</button>
+      <h3 id="registrationTitle" style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.4rem;">Join STREAM Club</h3>
+      <p id="registrationDescription" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Your application is sent to the club's private inbox for review.</p>
+      
+      <form id="registrationForm">
+        <div class="form-group">
+          <label for="studentName">Full Name</label>
+          <input type="text" id="studentName" name="name" class="form-control" placeholder="e.g. Lois Pugal" autocomplete="name" maxlength="100" required>
+        </div>
+        <div class="form-group">
+          <label for="studentGrade">Grade & Section</label>
+          <input type="text" id="studentGrade" name="grade" class="form-control" placeholder="e.g. Grade 8 Beavers" maxlength="60" required>
+        </div>
+        <div class="form-group">
+          <label for="studentEmail">Email Address</label>
+          <input type="email" id="studentEmail" name="email" class="form-control" placeholder="student@oakridge.edu" autocomplete="email" maxlength="254" required>
+        </div>
+        <div class="form-group">
+          <label for="primaryInterest">Primary STREAM Interest</label>
+          <select id="primaryInterest" name="interest" class="form-control">
+            <option>Science &amp; Research</option>
+            <option>Technology &amp; Software</option>
+            <option>Engineering &amp; Robotics</option>
+            <option>Architecture &amp; Design</option>
+            <option>Mathematics &amp; Logic</option>
+          </select>
+        </div>
+        <button id="registrationSubmit" type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.8rem;">Submit Registration</button>
+        <p id="registrationStatus" class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>Oakridge International School of Young Leaders — Student Affairs Office</p>
+      <p style="margin-top: 5px; color: var(--text-dim);">STREAM Innovation Club (SY 2026-2027) • Lead. Serve. Grow.</p>
+      <p style="margin-top: 0.75rem;"><a href="/admin" style="color: var(--text-dim);">Club administrator sign in</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Pillar Data Source
+    const pillarsData = {
+      science: {
+        title: "Science Focus",
+        desc: "Investigating natural phenomena through experimental design, biology, and chemistry labs. Members conduct systematic investigations to analyze environmental and physical science topics.",
+        tags: ["Experimental Design", "Hypothesis Testing", "Data Analysis"],
+        icon: "🔬"
+      },
+      tech: {
+        title: "Technology Focus",
+        desc: "Building digital solutions, coding interactive web platforms, and exploring software engineering frameworks to solve real-world automation challenges.",
+        tags: ["Programming", "Web Development", "Cyber Security"],
+        icon: "💻"
+      },
+      research: {
+        title: "Research Focus",
+        desc: "Formulating critical academic questions, reviewing scientific literature, and analyzing empirical data to support evidence-based discovery.",
+        tags: ["Literature Review", "Data Collection", "Academic Writing"],
+        icon: "📑"
+      },
+      engineering: {
+        title: "Engineering Focus",
+        desc: "Applying physical and structural mechanics to design physical prototypes, micro-robotics, and mechanical systems.",
+        tags: ["Robotics", "Prototyping", "3D Modeling"],
+        icon: "⚙️"
+      },
+      architecture: {
+        title: "Architecture Focus",
+        desc: "Designing spatial environments, structural blue-prints, and sustainable human-centered physical spaces with modern mathematical geometry.",
+        tags: ["CAD Modeling", "Structural Design", "Spatial Planning"],
+        icon: "🏛️"
+      },
+      math: {
+        title: "Mathematics Focus",
+        desc: "Exploring theoretical logic, spatial transformations, algorithmic problem solving, and geometric calculations.",
+        tags: ["Calculus", "Geometry", "Algorithm Design"],
+        icon: "📐"
+      }
+    };
+
+    function selectPillar(key, selectedCard) {
+      const data = pillarsData[key];
+      if (!data || !selectedCard) return;
+
+      document.querySelectorAll('.pillar-card').forEach(card => {
+        const isSelected = card === selectedCard;
+        card.classList.toggle('active', isSelected);
+        card.setAttribute('aria-pressed', String(isSelected));
+      });
+
+      document.getElementById('display-title').textContent = data.title;
+      document.getElementById('display-desc').textContent = data.desc;
+      
+      const tagsContainer = document.getElementById('display-tags');
+      tagsContainer.replaceChildren();
+      data.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.textContent = tag;
+        tagsContainer.appendChild(span);
+      });
+
+      const visual = document.getElementById('display-visual');
+      const icon = document.createElement('div');
+      const caption = document.createElement('p');
+      icon.style.fontSize = '3.5rem';
+      icon.textContent = data.icon;
+      caption.style.cssText = 'font-size: 0.85rem; color: var(--text-dim); margin-top: 8px;';
+      caption.textContent = `${data.title} Framework`;
+      visual.replaceChildren(icon, caption);
+    }
+
+    // Event Filter Functionality
+    function filterEvents(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(button => {
+        const isSelected = button === btn;
+        button.classList.toggle('active', isSelected);
+        button.setAttribute('aria-pressed', String(isSelected));
+      });
+
+      const cards = document.querySelectorAll('.activity-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Interactive Interactive Sandbox Engine
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    let angle = 0;
+    let animationFrameId = null;
+    let lastFrameTime = 0;
+    let simulationVisible = true;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function resizeSimulationCanvas() {
+      const bounds = canvas.getBoundingClientRect();
+      if (!bounds.width || !bounds.height) return;
+
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      const width = Math.round(bounds.width * pixelRatio);
+      const height = Math.round(bounds.height * pixelRatio);
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    }
+
+    function renderSimulation(timestamp = 0) {
+      animationFrameId = null;
+      resizeSimulationCanvas();
+
+      const mode = document.getElementById('mode-select').value;
+      const speed = Number(document.getElementById('param-speed').value) * 0.02;
+      const nodes = Number.parseInt(document.getElementById('param-nodes').value, 10);
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const delta = lastFrameTime ? Math.min(timestamp - lastFrameTime, 50) : 16.67;
+      lastFrameTime = timestamp;
+
+      ctx.clearRect(0, 0, width, height);
+      const cx = width / 2;
+      const cy = height / 2;
+
+      if (mode === 'math') {
+        document.getElementById('metric-1').textContent = `Angular Velocity: ${(speed * 50).toFixed(1)} rad/s`;
+        document.getElementById('metric-2').textContent = `Symmetry Order: ${nodes}`;
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.strokeStyle = '#00f2fe';
+        ctx.lineWidth = 1.5;
+
+        const radius = Math.min(width, height) * 0.27 + Math.sin(angle * 2) * 12;
+        for (let i = 0; i < nodes; i++) {
+          ctx.rotate((Math.PI * 2) / nodes);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(radius * Math.cos(angle), radius * Math.sin(angle));
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(radius * Math.cos(angle), radius * Math.sin(angle), 6, 0, Math.PI * 2);
+          ctx.fillStyle = '#ff007f';
+          ctx.fill();
+        }
+        ctx.restore();
+      } else {
+        document.getElementById('metric-1').textContent = `Driver Gear RPM: ${Math.round(speed * 600)}`;
+        document.getElementById('metric-2').textContent = `Teeth Count: ${nodes}`;
+
+        const radius = Math.min(height * 0.25, width * 0.14);
+        drawGear(cx - radius * 0.98, cy, radius, nodes, angle, '#00f2fe');
+        drawGear(cx + radius * 0.98, cy, radius, nodes, -angle, '#7000ff');
+      }
+
+      angle += speed * (delta / 16.67);
+      if (simulationVisible && !document.hidden && !reducedMotion.matches) {
+        animationFrameId = requestAnimationFrame(renderSimulation);
+      }
+    }
+
+    function drawGear(x, y, radius, teeth, rotation, color) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+
+      for (let i = 0; i < teeth; i++) {
+        const a1 = (i / teeth) * Math.PI * 2;
+        const a2 = ((i + 0.5) / teeth) * Math.PI * 2;
+        ctx.lineTo(Math.cos(a1) * radius, Math.sin(a1) * radius);
+        ctx.lineTo(Math.cos(a2) * (radius + 12), Math.sin(a2) * (radius + 12));
+      }
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 15, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function updateSim() {
+      lastFrameTime = 0;
+      if (animationFrameId === null && simulationVisible && !document.hidden) {
+        animationFrameId = requestAnimationFrame(renderSimulation);
+      }
+    }
+
+    const simulationObserver = new IntersectionObserver(([entry]) => {
+      simulationVisible = entry.isIntersecting;
+      if (simulationVisible) {
+        updateSim();
+      } else if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    });
+    simulationObserver.observe(canvas);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      } else if (!document.hidden) {
+        updateSim();
+      }
+    });
+
+    reducedMotion.addEventListener('change', updateSim);
+    window.addEventListener('resize', updateSim);
+    updateSim();
+
+    // Modal Control
+    const registrationModal = document.getElementById('registrationModal');
+    const registrationForm = document.getElementById('registrationForm');
+    const registrationStatus = document.getElementById('registrationStatus');
+    const registrationSubmit = document.getElementById('registrationSubmit');
+    let modalReturnFocus = null;
+
+    function openModal(trigger) {
+      modalReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
+      registrationModal.classList.add('active');
+      registrationModal.setAttribute('aria-hidden', 'false');
+      document.getElementById('studentName').focus();
+    }
+
+    function closeModal() {
+      registrationModal.classList.remove('active');
+      registrationModal.setAttribute('aria-hidden', 'true');
+      if (modalReturnFocus instanceof HTMLElement) modalReturnFocus.focus();
+    }
+
+    registrationForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      registrationStatus.textContent = 'Sending your application...';
+      registrationStatus.dataset.state = '';
+      registrationSubmit.disabled = true;
+
+      const formData = new FormData(registrationForm);
+      const application = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch('/api/registrations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(application)
+        });
+        const responseText = await response.text();
+        let result = {};
+        if (responseText.trim()) {
+          try {
+            result = JSON.parse(responseText);
+          } catch {
+            throw new Error(response.ok
+              ? 'The server returned an unreadable response. Please try again later.'
+              : `The server returned an unexpected response (HTTP ${response.status}). Please try again later.`);
+          }
+        } else if (response.status !== 204) {
+          throw new Error(`The server returned an empty response (HTTP ${response.status}). Please try again later.`);
+        }
+        if (!response.ok) throw new Error(result.error || 'The application could not be submitted.');
+
+        registrationStatus.textContent = 'Application delivered to the club inbox. Thank you for your interest!';
+        registrationStatus.dataset.state = 'success';
+        registrationForm.reset();
+      } catch (error) {
+        registrationStatus.textContent = error instanceof TypeError
+          ? 'Could not connect to the club server. Please try again later.'
+          : error.message;
+        registrationStatus.dataset.state = 'error';
+      } finally {
+        registrationSubmit.disabled = false;
+      }
+    });
+
+    registrationModal.addEventListener('click', event => {
+      if (event.target === registrationModal) closeModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && registrationModal.classList.contains('active')) {
+        closeModal();
+      }
+
+      if (event.key === 'Tab' && registrationModal.classList.contains('active')) {
+        const focusable = [...registrationModal.querySelectorAll('button, input, select, a[href], [tabindex]:not([tabindex="-1"])')]
+          .filter(element => !element.disabled);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    const menuToggle = document.getElementById('menuToggle');
+    const siteNavigation = document.getElementById('siteNavigation');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = menuToggle.getAttribute('aria-expanded') !== 'true';
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      siteNavigation.classList.toggle('open', isOpen);
+    });
+
+    siteNavigation.addEventListener('click', event => {
+      if (event.target.closest('a')) {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        siteNavigation.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#070913">
+  <title>Private Applications | STREAM Club</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, sans-serif;
+      background: #070913;
+      color: #f3f4f6;
+      --muted: #9ca3af;
+      --cyan: #00f2fe;
+      --panel: #121629;
+      --border: rgba(0, 242, 254, .22);
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(ellipse at top, #151432, #070913 65%); }
+    main { width: min(100% - 2rem, 58rem); margin: 0 auto; padding: 3rem 0; }
+    header, .panel, .application { border: 1px solid var(--border); border-radius: 1rem; background: rgba(18, 22, 41, .94); }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+    h1, h2, p { margin-top: 0; }
+    h1 { margin-bottom: .25rem; font-size: clamp(1.25rem, 4vw, 1.8rem); }
+    h2 { margin-bottom: .3rem; font-size: 1.1rem; }
+    .muted, #status { color: var(--muted); }
+    .panel { max-width: 29rem; margin: 3rem auto; padding: 1.5rem; }
+    label { display: block; margin: 1rem 0 .35rem; color: var(--muted); font-size: .9rem; }
+    input { width: 100%; padding: .75rem; border: 1px solid #394158; border-radius: .55rem; background: #070913; color: inherit; font: inherit; }
+    button { padding: .65rem .9rem; border: 1px solid var(--border); border-radius: .55rem; background: #16202f; color: inherit; font: inherit; font-weight: 650; cursor: pointer; }
+    button:hover { border-color: var(--cyan); }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    button:disabled { opacity: .55; cursor: wait; }
+    .primary { margin-top: 1.1rem; width: 100%; background: #12343a; color: #bffcff; }
+    #status { min-height: 1.5rem; margin: .8rem 0 0; }
+    #status[data-error="true"] { color: #fda4af; }
+    #status[data-success="true"] { color: #6ee7b7; }
+    #inbox { display: grid; gap: .8rem; }
+    .application { padding: 1.1rem; }
+    .application-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .application p { margin-bottom: .5rem; overflow-wrap: anywhere; }
+    .application time, .badge { color: var(--muted); font-size: .85rem; }
+    .badge { display: inline-block; margin: .15rem 0 .75rem; padding: .2rem .55rem; border: 1px solid #394158; border-radius: 999px; }
+    .actions { margin-top: .75rem; }
+    .toolbar { display: flex; align-items: center; gap: .65rem; }
+    #inboxView[hidden], #loginView[hidden] { display: none; }
+    @media (max-width: 500px) {
+      main { padding-top: 1rem; }
+      header { align-items: flex-start; flex-direction: column; }
+      .toolbar { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>STREAM Club · Private Applications</h1>
+        <p class="muted">Club administrators only. Application details are encrypted at rest.</p>
+      </div>
+      <div class="toolbar" id="adminToolbar" hidden>
+        <button type="button" id="refreshButton">Refresh</button>
+        <button type="button" id="logoutButton">Sign out</button>
+      </div>
+    </header>
+
+    <section class="panel" id="loginView" aria-labelledby="loginTitle">
+      <h2 id="loginTitle">Administrator sign in</h2>
+      <p class="muted">Use the private inbox credentials configured on the server.</p>
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" maxlength="80" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" maxlength="256" required>
+        <button class="primary" id="loginButton" type="submit">Sign in</button>
+      </form>
+    </section>
+
+    <section id="inboxView" hidden aria-labelledby="inboxTitle">
+      <h2 id="inboxTitle">Application inbox</h2>
+      <p class="muted" id="applicationCount" aria-live="polite"></p>
+      <div id="inbox"></div>
+    </section>
+    <p id="status" role="status" aria-live="polite"></p>
+  </main>
+  <script>
+    const loginView = document.getElementById('loginView');
+    const inboxView = document.getElementById('inboxView');
+    const loginForm = document.getElementById('loginForm');
+    const loginButton = document.getElementById('loginButton');
+    const status = document.getElementById('status');
+    const inbox = document.getElementById('inbox');
+    const applicationCount = document.getElementById('applicationCount');
+    const adminToolbar = document.getElementById('adminToolbar');
+
+    function showStatus(message, error = false, success = false) {
+      status.textContent = message;
+      status.dataset.error = String(error);
+      status.dataset.success = String(success);
+    }
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: 'same-origin',
+        cache: 'no-store',
+        ...options,
+        headers: {
+          ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+          ...options.headers
+        }
+      });
+      const responseText = await response.text();
+      let result = {};
+
+      if (response.status === 405) {
+        const method = (options.method || 'GET').toUpperCase();
+        throw new Error(
+          `The server does not allow ${method} ${new URL(url, location.href).pathname} (HTTP 405). ` +
+          'Restart the Node.js server with npm start, then reload this private inbox.'
+        );
+      }
+
+      if (responseText.trim()) {
+        try {
+          result = JSON.parse(responseText);
+        } catch {
+          throw new Error(response.ok
+            ? 'The server returned an unreadable response. Refresh the page and try again.'
+            : `The server returned an unexpected response (HTTP ${response.status}). Try again later.`);
+        }
+      } else if (response.status !== 204) {
+        throw new Error(`The server returned an empty response (HTTP ${response.status}). Refresh the page and try again.`);
+      }
+
+      if (!response.ok) throw new Error(result.error || `Request failed (${response.status}).`);
+      return result;
+    }
+
+    function showSignedIn() {
+      loginView.hidden = true;
+      inboxView.hidden = false;
+      adminToolbar.hidden = false;
+      document.getElementById('password').value = '';
+      loadApplications();
+    }
+
+    function showSignedOut() {
+      loginView.hidden = false;
+      inboxView.hidden = true;
+      adminToolbar.hidden = true;
+      inbox.replaceChildren();
+    }
+
+    async function loadApplications() {
+      showStatus('Loading private applications...');
+      try {
+        const { applications } = await api('/api/admin/applications');
+        applicationCount.textContent = `${applications.length} application${applications.length === 1 ? '' : 's'}`;
+        inbox.replaceChildren();
+
+        if (applications.length === 0) {
+          const empty = document.createElement('article');
+          empty.className = 'application';
+          empty.textContent = 'No applications have been submitted yet.';
+          inbox.append(empty);
+        }
+
+        for (const application of applications) {
+          const card = document.createElement('article');
+          card.className = 'application';
+
+          const heading = document.createElement('div');
+          heading.className = 'application-heading';
+          const name = document.createElement('h2');
+          name.textContent = application.name;
+          const date = document.createElement('time');
+          date.dateTime = application.submittedAt;
+          const parsedDate = new Date(application.submittedAt);
+          date.textContent = Number.isNaN(parsedDate.getTime()) ? 'Date unavailable' : parsedDate.toLocaleString();
+          heading.append(name, date);
+
+          const badge = document.createElement('span');
+          badge.className = 'badge';
+          badge.textContent = application.status === 'reviewed' ? 'Reviewed' : 'New';
+
+          const grade = document.createElement('p');
+          grade.textContent = `Grade & section: ${application.grade}`;
+          const email = document.createElement('p');
+          email.textContent = `Email: ${application.email}`;
+          const interest = document.createElement('p');
+          interest.textContent = `Interest: ${application.interest}`;
+
+          const actions = document.createElement('div');
+          actions.className = 'actions';
+          const reviewButton = document.createElement('button');
+          reviewButton.type = 'button';
+          reviewButton.textContent = application.status === 'reviewed' ? 'Mark as new' : 'Mark reviewed';
+          reviewButton.addEventListener('click', async () => {
+            reviewButton.disabled = true;
+            try {
+              await api('/api/admin/applications', {
+                method: 'PATCH',
+                body: JSON.stringify({
+                  id: application.id,
+                  status: application.status === 'reviewed' ? 'new' : 'reviewed'
+                })
+              });
+              await loadApplications();
+            } catch (error) {
+              showStatus(error.message, true);
+              reviewButton.disabled = false;
+            }
+          });
+          const deleteButton = document.createElement('button');
+          deleteButton.type = 'button';
+          deleteButton.textContent = 'Delete application';
+          deleteButton.style.marginLeft = '.5rem';
+          deleteButton.addEventListener('click', async () => {
+            if (!window.confirm(`Permanently delete the application from ${application.name}?`)) return;
+            deleteButton.disabled = true;
+            try {
+              await api('/api/admin/applications', {
+                method: 'DELETE',
+                body: JSON.stringify({ id: application.id })
+              });
+              await loadApplications();
+            } catch (error) {
+              showStatus(error.message, true);
+              deleteButton.disabled = false;
+            }
+          });
+          actions.append(reviewButton, deleteButton);
+          card.append(heading, badge, grade, email, interest, actions);
+          inbox.append(card);
+        }
+        showStatus('Private inbox loaded.');
+      } catch (error) {
+        if (error.message.includes('Sign in')) {
+          showSignedOut();
+        }
+        showStatus(error.message, true);
+      }
+    }
+
+    loginForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      loginButton.disabled = true;
+      showStatus('Signing in...');
+      try {
+        const formData = new FormData(loginForm);
+        await api('/api/admin/login', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: formData.get('username'),
+            password: formData.get('password')
+          })
+        });
+        showSignedIn();
+        showStatus('Signed in to the private inbox.', false, true);
+      } catch (error) {
+        showStatus(error.message, true);
+      } finally {
+        loginButton.disabled = false;
+      }
+    });
+
+    document.getElementById('refreshButton').addEventListener('click', loadApplications);
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+      try {
+        await api('/api/admin/logout', { method: 'POST' });
+        showSignedOut();
+        showStatus('Signed out.');
+      } catch (error) {
+        showStatus(error.message, true);
+      }
+    });
+
+    async function restoreSession() {
+      try {
+        const session = await api('/api/admin/session');
+        if (session.authenticated) {
+          showSignedIn();
+          return;
+        }
+        showSignedOut();
+      } catch (error) {
+        showSignedOut();
+        showStatus(error.message, true);
+      }
+    }
+
+    restoreSession();
+  </script>
+</body>
+</html>
