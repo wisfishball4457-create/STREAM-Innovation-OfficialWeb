@@ -14,7 +14,7 @@ Open <http://127.0.0.1:3000>. The `/healthz` endpoint reports whether the privat
 
 Run `npm run setup-admin` once to create a random administrator password and a separate encryption key in the ignored `.env` file. Open that file locally to retrieve the password; never share or commit it. The encrypted application store is created under `.private-data/`, which is also ignored by Git. Set `APPLICATION_DATA_DIR` to a persistent volume path on hosted deployments. Back up `.env` and the application data directory together in a school-approved secure location: losing the encryption key makes stored applications unreadable.
 
-Open <http://127.0.0.1:3000/admin> and sign in with username `admin` and the generated password. Admin sessions expire after four hours and are held in server memory; restart the server to end all sessions. Applications are rate-limited, validated, stored encrypted using AES-256-GCM, and can be marked reviewed from the private inbox.
+Open <http://127.0.0.1:3000/admin> and sign in with the administrator username and password configured in `.env`. Admin sessions expire after four hours and are held in server memory; restart the server to end all sessions. The private inbox can be used to review or delete previously stored applications. The public site does not accept new membership applications.
 
 ## Deploy
 

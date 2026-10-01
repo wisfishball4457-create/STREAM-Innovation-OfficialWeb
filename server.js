@@ -34,10 +34,8 @@ const maxBodyBytes = 8 * 1024;
 const requestWindowMs = 15 * 60 * 1000;
 const maxRequestsPerWindow = 5;
 const loginRequests = new Map();
-const applicationRequests = new Map();
 const sessions = new Map();
 const sessionLifetimeMs = 4 * 60 * 60 * 1000;
-const applicationLimit = 500;
 let applicationWriteQueue = Promise.resolve();
 
 if (!Number.isInteger(port) || port < 1 || port > 65535) {
@@ -157,100 +155,6 @@ async function readJsonBody(request) {
     const error = new Error('Request body must be valid JSON.');
     error.statusCode = 400;
     throw error;
-  }
-}
-
-function validateApplication(value) {
-  const allowedInterests = new Set([
-    'Science & Research',
-    'Technology & Software',
-    'Engineering & Robotics',
-    'Architecture & Design',
-    'Mathematics & Logic'
-  ]);
-
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return 'Provide a valid registration application.';
-  }
-
-  const { name, grade, email, interest } = value;
-  if (typeof name !== 'string' || !name.trim() || name.trim().length > 100) {
-    return 'Enter a name of 1 to 100 characters.';
-  }
-  if (typeof grade !== 'string' || !grade.trim() || grade.trim().length > 60) {
-    return 'Enter a grade and section of 1 to 60 characters.';
-  }
-  if (typeof email !== 'string' || email.length > 254 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return 'Enter a valid email address.';
-  }
-  if (!allowedInterests.has(interest)) {
-    return 'Select a valid STREAM interest.';
-  }
-
-  return null;
-}
-
-async function handleRegistration(request, response) {
-  if (request.method !== 'POST') {
-    response.setHeader('Allow', 'POST');
-    return sendJson(response, 405, { error: 'Use POST to submit an application.' });
-  }
-
-  if (!adminConfigured) {
-    return sendJson(response, 503, { error: 'Applications cannot be accepted until the private inbox is configured.' });
-  }
-
-  if (process.env.NODE_ENV === 'production' && !isSecureRequest(request)) {
-    return sendJson(response, 426, { error: 'Application submissions require HTTPS.' });
-  }
-  if (!originIsSameSite(request)) return sendJson(response, 403, { error: 'Cross-site submissions are not allowed.' });
-  if (request.headers['content-type']?.split(';')[0].trim() !== 'application/json') {
-    return sendJson(response, 415, { error: 'Submit the application as JSON.' });
-  }
-
-  if (rateLimited(request, applicationRequests, maxRequestsPerWindow * 2)) {
-    return sendJson(response, 429, { error: 'Too many attempts. Please try again later.' });
-  }
-
-  let application;
-  try {
-    application = await readJsonBody(request);
-  } catch (error) {
-    return sendJson(response, error.statusCode || 400, { error: error.message });
-  }
-
-  const validationError = validateApplication(application);
-  if (validationError) {
-    return sendJson(response, 400, { error: validationError });
-  }
-
-  try {
-    const savedApplication = await queueApplicationWrite(async () => {
-      const applications = await readApplications();
-      if (applications.length >= applicationLimit) {
-        const error = new Error('The private inbox has reached its storage limit.');
-        error.statusCode = 503;
-        throw error;
-      }
-      const entry = {
-        id: crypto.randomUUID(),
-        submittedAt: new Date().toISOString(),
-        name: application.name.trim(),
-        grade: application.grade.trim(),
-        email: application.email.trim(),
-        interest: application.interest,
-        status: 'new'
-      };
-      applications.unshift(entry);
-      await writeApplications(applications);
-      return entry;
-    });
-    return sendJson(response, 202, { success: true, id: savedApplication.id });
-  } catch (error) {
-    if (error.statusCode) return sendJson(response, error.statusCode, { error: error.message });
-    console.error(`Could not save application (${error.code || error.name}).`);
-    return sendJson(response, 500, { error: 'The application could not be saved. Please try again later.' });
   }
 }
 
@@ -542,7 +446,7 @@ const server = http.createServer(async (request, response) => {
   }
 
   if (pathname === '/api/registrations') {
-    return handleRegistration(request, response);
+    return sendJson(response, 410, { error: 'Membership applications are not accepted on this website.' });
   }
 
   if (pathname.startsWith('/api/admin/')) {

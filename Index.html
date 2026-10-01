@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Discover the STREAM Innovation Club at Oakridge International School: explore our six learning pillars, interactive lab, projects, calendar, and membership information.">
+  <meta name="description" content="Discover the STREAM Innovation Club at Oakridge International School: explore our six learning pillars, interactive lab, projects, calendar, and student team.">
   <meta name="theme-color" content="#070913">
   <title>STREAM Innovation Club | Oakridge International School</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -527,108 +527,18 @@
       color: var(--text-dim);
     }
 
-    /* Registration Panel / Modal */
-    .join-panel-container {
+    .club-info-panel {
       background: linear-gradient(135deg, rgba(112,0,255,0.15), rgba(0,242,254,0.1));
       border: 1px solid var(--accent-cyan);
       border-radius: 20px;
       padding: 3.5rem 2rem;
       text-align: center;
       margin: 4rem 0;
-      /* FIX: Removed violent/shaking keyframe animations */
       transition: box-shadow 0.3s ease;
     }
 
-    .join-panel-container:hover {
+    .club-info-panel:hover {
       box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
-    }
-
-    /* Modal Backdrop */
-    .modal-overlay {
-      position: fixed;
-      top:0; left:0; width:100vw; height:100vh;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: all;
-      transition-delay: 0s;
-    }
-
-    .modal-card {
-      background: #0f1322;
-      border: 1px solid var(--border-glow);
-      width: 90%;
-      max-width: 500px;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-      position: relative;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 1rem;
-      right: 1.2rem;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .form-group {
-      margin-bottom: 1.2rem;
-      text-align: left;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 8px;
-      color: #fff;
-      font-family: inherit;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.15);
-    }
-
-    .form-status {
-      min-height: 1.5rem;
-      margin-top: 0.9rem;
-      color: var(--accent-cyan);
-      font-size: 0.88rem;
-    }
-
-    .form-status[data-state="error"] {
-      color: #fda4af;
-    }
-
-    .form-status[data-state="success"] {
-      color: var(--accent-emerald);
     }
 
     .skip-link {
@@ -665,16 +575,6 @@
     .menu-toggle:focus-visible {
       outline: 2px solid var(--accent-cyan);
       outline-offset: 3px;
-    }
-
-    .modal-overlay {
-      padding: 1rem;
-      overflow-y: auto;
-    }
-
-    .modal-card {
-      max-height: calc(100vh - 2rem);
-      overflow-y: auto;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -730,8 +630,8 @@
       .brand-text h1 { font-size: 1rem; }
       .brand-text p { font-size: 0.62rem; }
       .activities-grid { grid-template-columns: 1fr; }
-      .join-panel-container { padding: 2.5rem 1.2rem; }
-      .join-panel-container h2 { font-size: 1.7rem !important; }
+      .club-info-panel { padding: 2.5rem 1.2rem; }
+      .club-info-panel h2 { font-size: 1.7rem !important; }
     }
   </style>
 </head>
@@ -760,7 +660,6 @@
           <li><a href="#team">Team</a></li>
         </ul>
       </nav>
-      <button class="btn btn-primary" type="button" onclick="openModal(this)">Join Club</button>
     </div>
   </header>
 
@@ -778,7 +677,6 @@
         Oakridge International School’s premier hub for cross-disciplinary discovery. Combining science, technology, research, engineering, architecture, and mathematics to solve real-world challenges.
       </p>
       <div style="display: flex; gap: 1rem; justify-content: center;">
-        <button class="btn btn-primary" type="button" onclick="openModal(this)">Apply for Membership</button>
         <a href="#schedule" class="btn" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1);">Explore Calendar</a>
       </div>
     </section>
@@ -1027,52 +925,15 @@
       </div>
     </section>
 
-    <!-- Join Call to Action Panel (Clean Static Styling - No Violent Shake) -->
-    <section class="join-panel-container">
-      <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 0.8rem;">Ready to Build the Future?</h2>
+    <!-- Club information -->
+    <section class="club-info-panel">
+      <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 0.8rem;">Explore and Learn with STREAM</h2>
       <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 1.8rem;">
-        Join Oakridge International School's STREAM Innovation Club today! Meetings held every Friday at 3:25 PM in Grade 9 Classroom.
+        Discover our projects, interactive lab, and six learning pillars. Club activities meet Fridays from 3:25 PM to 4:20 PM in the Grade 9 Classroom.
       </p>
-      <button class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem;" type="button" onclick="openModal(this)">Register for Membership</button>
     </section>
 
   </main>
-
-  <!-- Registration Modal -->
-  <div class="modal-overlay" id="registrationModal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="registrationTitle" aria-describedby="registrationDescription">
-      <button class="close-modal" type="button" aria-label="Close registration form" onclick="closeModal()">&times;</button>
-      <h3 id="registrationTitle" style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.4rem;">Join STREAM Club</h3>
-      <p id="registrationDescription" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Your application is sent to the club's private inbox for review.</p>
-      
-      <form id="registrationForm">
-        <div class="form-group">
-          <label for="studentName">Full Name</label>
-          <input type="text" id="studentName" name="name" class="form-control" placeholder="e.g. Lois Pugal" autocomplete="name" maxlength="100" required>
-        </div>
-        <div class="form-group">
-          <label for="studentGrade">Grade & Section</label>
-          <input type="text" id="studentGrade" name="grade" class="form-control" placeholder="e.g. Grade 8 Beavers" maxlength="60" required>
-        </div>
-        <div class="form-group">
-          <label for="studentEmail">Email Address</label>
-          <input type="email" id="studentEmail" name="email" class="form-control" placeholder="student@oakridge.edu" autocomplete="email" maxlength="254" required>
-        </div>
-        <div class="form-group">
-          <label for="primaryInterest">Primary STREAM Interest</label>
-          <select id="primaryInterest" name="interest" class="form-control">
-            <option>Science &amp; Research</option>
-            <option>Technology &amp; Software</option>
-            <option>Engineering &amp; Robotics</option>
-            <option>Architecture &amp; Design</option>
-            <option>Mathematics &amp; Logic</option>
-          </select>
-        </div>
-        <button id="registrationSubmit" type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.8rem;">Submit Registration</button>
-        <p id="registrationStatus" class="form-status" role="status" aria-live="polite"></p>
-      </form>
-    </div>
-  </div>
 
   <footer>
     <div class="container">
@@ -1304,93 +1165,6 @@
     reducedMotion.addEventListener('change', updateSim);
     window.addEventListener('resize', updateSim);
     updateSim();
-
-    // Modal Control
-    const registrationModal = document.getElementById('registrationModal');
-    const registrationForm = document.getElementById('registrationForm');
-    const registrationStatus = document.getElementById('registrationStatus');
-    const registrationSubmit = document.getElementById('registrationSubmit');
-    let modalReturnFocus = null;
-
-    function openModal(trigger) {
-      modalReturnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
-      registrationModal.classList.add('active');
-      registrationModal.setAttribute('aria-hidden', 'false');
-      document.getElementById('studentName').focus();
-    }
-
-    function closeModal() {
-      registrationModal.classList.remove('active');
-      registrationModal.setAttribute('aria-hidden', 'true');
-      if (modalReturnFocus instanceof HTMLElement) modalReturnFocus.focus();
-    }
-
-    registrationForm.addEventListener('submit', async event => {
-      event.preventDefault();
-      registrationStatus.textContent = 'Sending your application...';
-      registrationStatus.dataset.state = '';
-      registrationSubmit.disabled = true;
-
-      const formData = new FormData(registrationForm);
-      const application = Object.fromEntries(formData.entries());
-
-      try {
-        const response = await fetch('/api/registrations', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(application)
-        });
-        const responseText = await response.text();
-        let result = {};
-        if (responseText.trim()) {
-          try {
-            result = JSON.parse(responseText);
-          } catch {
-            throw new Error(response.ok
-              ? 'The server returned an unreadable response. Please try again later.'
-              : `The server returned an unexpected response (HTTP ${response.status}). Please try again later.`);
-          }
-        } else if (response.status !== 204) {
-          throw new Error(`The server returned an empty response (HTTP ${response.status}). Please try again later.`);
-        }
-        if (!response.ok) throw new Error(result.error || 'The application could not be submitted.');
-
-        registrationStatus.textContent = 'Application delivered to the club inbox. Thank you for your interest!';
-        registrationStatus.dataset.state = 'success';
-        registrationForm.reset();
-      } catch (error) {
-        registrationStatus.textContent = error instanceof TypeError
-          ? 'Could not connect to the club server. Please try again later.'
-          : error.message;
-        registrationStatus.dataset.state = 'error';
-      } finally {
-        registrationSubmit.disabled = false;
-      }
-    });
-
-    registrationModal.addEventListener('click', event => {
-      if (event.target === registrationModal) closeModal();
-    });
-
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && registrationModal.classList.contains('active')) {
-        closeModal();
-      }
-
-      if (event.key === 'Tab' && registrationModal.classList.contains('active')) {
-        const focusable = [...registrationModal.querySelectorAll('button, input, select, a[href], [tabindex]:not([tabindex="-1"])')]
-          .filter(element => !element.disabled);
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
-    });
 
     const menuToggle = document.getElementById('menuToggle');
     const siteNavigation = document.getElementById('siteNavigation');
