@@ -749,6 +749,10 @@
             <select id="mode-select" class="form-control" onchange="updateSim()">
               <option value="math">Math & Geometric Visualizer</option>
               <option value="gear">Engineering Gear Dynamics</option>
+              <option value="wave">Wave Motion Lab</option>
+              <option value="orbit">Orbital System</option>
+              <option value="ecology">Ecosystem Flow</option>
+              <option value="pendulum">Pendulum Motion Lab</option>
             </select>
           </div>
 
@@ -758,7 +762,7 @@
           </div>
 
           <div class="control-group">
-            <label for="param-nodes">Symmetry / Gear Teeth:</label>
+            <label for="param-nodes" id="param-label">Pattern Density:</label>
             <input type="range" id="param-nodes" min="3" max="16" value="8" oninput="updateSim()">
           </div>
 
@@ -889,8 +893,8 @@
         </div>
 
         <div class="team-card">
-          <div class="avatar-circle">CB</div>
-          <div class="team-name">Constantine A. Beguas</div>
+          <div class="avatar-circle">LM</div>
+          <div class="team-name">Lea Mhae</div>
           <div class="team-role">Vice President</div>
           <div class="team-grade">Grade 8 Beavers</div>
         </div>
@@ -903,15 +907,15 @@
         </div>
 
         <div class="team-card">
-          <div class="avatar-circle">LD</div>
-          <div class="team-name">Lanz Andrew C. De Vera</div>
+          <div class="avatar-circle">LJ</div>
+          <div class="team-name">Linjoln Jace</div>
           <div class="team-role">Treasurer</div>
           <div class="team-grade">Grade 7 Engineers</div>
         </div>
 
         <div class="team-card">
-          <div class="avatar-circle">SL</div>
-          <div class="team-name">Smith Angelo L. Langton</div>
+          <div class="avatar-circle">SP</div>
+          <div class="team-name">Sachi Paran</div>
           <div class="team-role">PIO / Publicity</div>
           <div class="team-grade">Grade 8 Beavers</div>
         </div>
@@ -1057,6 +1061,27 @@
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     }
 
+    function updateParameterLabels(mode) {
+      const label = document.getElementById('param-label');
+      const nodesInput = document.getElementById('param-nodes');
+      const ranges = {
+        math: { label: 'Pattern Density:', min: 3, max: 16, value: 8 },
+        gear: { label: 'Gear Teeth:', min: 8, max: 20, value: 12 },
+        wave: { label: 'Wave Frequency:', min: 3, max: 18, value: 9 },
+        orbit: { label: 'Orbital Rings:', min: 3, max: 12, value: 6 },
+        ecology: { label: 'Flow Nodes:', min: 4, max: 16, value: 10 },
+        pendulum: { label: 'Pendulum Length:', min: 3, max: 12, value: 7 }
+      };
+
+      const config = ranges[mode] || ranges.math;
+      label.textContent = config.label;
+      nodesInput.min = config.min;
+      nodesInput.max = config.max;
+      if (Number(nodesInput.value) < config.min || Number(nodesInput.value) > config.max) {
+        nodesInput.value = config.value;
+      }
+    }
+
     function renderSimulation(timestamp = 0) {
       animationFrameId = null;
       resizeSimulationCanvas();
@@ -1072,6 +1097,8 @@
       ctx.clearRect(0, 0, width, height);
       const cx = width / 2;
       const cy = height / 2;
+
+      updateParameterLabels(mode);
 
       if (mode === 'math') {
         document.getElementById('metric-1').textContent = `Angular Velocity: ${(speed * 50).toFixed(1)} rad/s`;
@@ -1096,13 +1123,107 @@
           ctx.fill();
         }
         ctx.restore();
-      } else {
+      } else if (mode === 'gear') {
         document.getElementById('metric-1').textContent = `Driver Gear RPM: ${Math.round(speed * 600)}`;
         document.getElementById('metric-2').textContent = `Teeth Count: ${nodes}`;
 
         const radius = Math.min(height * 0.25, width * 0.14);
         drawGear(cx - radius * 0.98, cy, radius, nodes, angle, '#00f2fe');
         drawGear(cx + radius * 0.98, cy, radius, nodes, -angle, '#7000ff');
+      } else if (mode === 'wave') {
+        document.getElementById('metric-1').textContent = `Wave Frequency: ${nodes}`;
+        document.getElementById('metric-2').textContent = `Amplitude: ${(speed * 12 + 2).toFixed(1)}`;
+
+        ctx.strokeStyle = '#00f2fe';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x += 4) {
+          const y = cy + Math.sin((x / width) * (Math.PI * 2 * nodes) + angle) * (40 + speed * 22);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        for (let i = 0; i < nodes; i++) {
+          const orbX = (i / nodes) * width;
+          const orbY = cy + Math.sin(angle * 2 + i) * 30;
+          ctx.beginPath();
+          ctx.fillStyle = i % 2 === 0 ? '#ff007f' : '#00f5a0';
+          ctx.arc(orbX, orbY, 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (mode === 'orbit') {
+        document.getElementById('metric-1').textContent = `Orbital Velocity: ${(speed * 80).toFixed(1)}`;
+        document.getElementById('metric-2').textContent = `Orbit Count: ${nodes}`;
+
+        const radiusBase = Math.min(width, height) * 0.16;
+        ctx.save();
+        ctx.translate(cx, cy);
+        for (let i = 0; i < nodes; i++) {
+          const orbitRadius = radiusBase + i * 18;
+          ctx.beginPath();
+          ctx.strokeStyle = i % 2 === 0 ? '#00f2fe' : '#7000ff';
+          ctx.arc(0, 0, orbitRadius, 0, Math.PI * 2);
+          ctx.stroke();
+
+          const x = Math.cos(angle * (i + 1) + i) * orbitRadius;
+          const y = Math.sin(angle * (i + 1) + i) * orbitRadius;
+          ctx.beginPath();
+          ctx.fillStyle = '#ffb703';
+          ctx.arc(x, y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      } else if (mode === 'pendulum') {
+        document.getElementById('metric-1').textContent = `Period: ${(Math.PI * 2 * Math.sqrt(nodes / 10)).toFixed(2)} s`;
+        document.getElementById('metric-2').textContent = `Pendulum Length: ${nodes}`;
+
+        const pivotX = cx;
+        const pivotY = 38;
+        const length = Math.min(width, height) * 0.28 + (nodes - 7) * 10;
+        const swing = Math.sin(angle * 1.8) * 0.9;
+        const bobX = pivotX + Math.sin(swing) * length;
+        const bobY = pivotY + Math.cos(swing) * length;
+
+        ctx.strokeStyle = '#00f2fe';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(pivotX, pivotY);
+        ctx.lineTo(bobX, bobY);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = '#ff007f';
+        ctx.arc(pivotX, pivotY, 7, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = '#00f5a0';
+        ctx.arc(bobX, bobY, 12 + (nodes * 0.8), 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        document.getElementById('metric-1').textContent = `Flow Rate: ${(speed * 110).toFixed(1)}`;
+        document.getElementById('metric-2').textContent = `Active Nodes: ${nodes}`;
+
+        const particles = 28;
+        for (let i = 0; i < particles; i++) {
+          const x = ((i / particles) * width + angle * 22 + i * 21) % width;
+          const y = cy + Math.sin((i + angle * 2) * 0.8) * (28 + (i % nodes) * 6);
+          ctx.beginPath();
+          ctx.fillStyle = i % 2 === 0 ? '#00f5a0' : '#00f2fe';
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let x = 0; x <= width; x += 20) {
+          const y = cy + Math.sin((x / 25) + angle) * 50;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
       }
 
       angle += speed * (delta / 16.67);
